@@ -1,3 +1,4 @@
+import random
 def cria_baralho():
     letras_e_numeros=['A','2','3','4','5','6','7','8','9','10','J','Q','K']
     naipes=['♣', '♦', '♥', '♠']
@@ -34,8 +35,6 @@ def lista_movimentos_possiveis (baralho, posicao):
         lista_naipe.append(naipe)
         numero=extrai_valor(e)
         lista_numero.append(numero)
-    print (lista_numero)
-    print (lista_naipe)
 
     anterior=False
     anteriores=False
@@ -47,7 +46,7 @@ def lista_movimentos_possiveis (baralho, posicao):
             anterior=True
         if (posicao-3)>=0 and (lista_naipe[posicao]==lista_naipe[posicao-3] or lista_numero[posicao]==lista_numero[posicao-3]):
             anteriores=True
-            print (lista_naipe [posicao-3], lista_naipe [posicao], lista_numero[posicao], lista_numero[posicao-1], anterior, anteriores)
+
         if anterior==True and anteriores==True:
             return [1,3]
         elif anterior==True and anteriores==False:
@@ -82,11 +81,25 @@ def possui_movimentos_possiveis (baralho):
         if (e-3)>=0 and (lista_naipe[e]==lista_naipe[e-3] or lista_numero[e]==lista_numero[e-3]):
             anteriores=True
 
-    print (anterior, anteriores)
-
     if anterior==False and anteriores==False:
         return False
     else:
         return True
 
 
+def paciencia_acordeao():
+    print('-Paciência Acordeão-')
+    print('====================')
+    baralho=cria_baralho()
+    random.shuffle(baralho)
+
+    for e in range (len(baralho)):
+        print('Situação atual do baralho:')
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        i=0
+        while i<52:
+            print(baralho[i])
+            i+=1
+        
+
+print (paciencia_acordeao())
