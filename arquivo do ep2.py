@@ -98,19 +98,28 @@ def paciencia_acordeao():
         print('Situação atual do baralho:')
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
-        i=1
-        while i<53:
-            print('{}. {}' .format(i,baralho[i-1]))
+        i=0
+        j=1
+        while i<len(baralho):
+            print('{}. {}' .format(j,baralho[i]))
             i+=1
+            j+=1
 
-        posicao_origem=input('Digite a posicao da carta que deseja mover ({}-{}): ' .format('1', len(baralho)))
+        posicao_origem=int(input('Digite a posicao da carta que deseja mover ({}-{}): ' .format('1', len(baralho))))
+        if (posicao_origem<=0 or posicao_origem>52):
+            return 'Insira um valor válido'
+        else:
+            naipe_pos_origem=extrai_naipe(baralho[posicao_origem-1])
+            numero_pos_origem=extrai_valor(baralho[posicao_origem-1])
 
-        for e in range (len(baralho)):
-            if e==posicao_origem:
-                naipe_pos_origem=extrai_naipe(e)
-                valor_pos_origem=extrai_valor(e)
-                print (valor_pos_origem, naipe_pos_origem)
-            
+        posicao_destino=int(input('Sobre qual carta você quer empilhar o {}{} ? ' .format(numero_pos_origem, naipe_pos_origem)))   
+        if (posicao_destino<=0 or posicao_destino>52):
+            return 'Insira um valor válido'
+        else:
+            naipe_pos_destino=extrai_naipe(baralho[posicao_destino-1])
+            numero_pos_destino=extrai_valor(baralho[posicao_destino-1])
+            print (numero_pos_destino, naipe_pos_destino)
+
         pode_jogar=False
 
 print (paciencia_acordeao())
