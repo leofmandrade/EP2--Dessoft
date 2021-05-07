@@ -92,14 +92,25 @@ def paciencia_acordeao():
     print('====================')
     baralho=cria_baralho()
     random.shuffle(baralho)
+    pode_jogar=possui_movimentos_possiveis(baralho)
 
-    for e in range (len(baralho)):
+    if pode_jogar==True:
         print('Situação atual do baralho:')
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        i=0
-        while i<52:
-            print(baralho[i])
+
+        i=1
+        while i<53:
+            print('{}. {}' .format(i,baralho[i-1]))
             i+=1
-        
+
+        posicao_origem=input('Digite a posicao da carta que deseja mover ({}-{}): ' .format('1', len(baralho)))
+
+        for e in range (len(baralho)):
+            if e==posicao_origem:
+                naipe_pos_origem=extrai_naipe(e)
+                valor_pos_origem=extrai_valor(e)
+                print (valor_pos_origem, naipe_pos_origem)
+            
+        pode_jogar=False
 
 print (paciencia_acordeao())
