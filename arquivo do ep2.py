@@ -105,6 +105,7 @@ def paciencia_acordeao():
             i+=1
             j+=1
 
+
         posicao_origem=int(input('Digite a posicao da carta que deseja mover ({}-{}): ' .format('1', len(baralho))))
         if (posicao_origem<=0 or posicao_origem>52):
             return 'Insira um valor válido'
@@ -112,7 +113,28 @@ def paciencia_acordeao():
             naipe_pos_origem=extrai_naipe(baralho[posicao_origem-1])
             numero_pos_origem=extrai_valor(baralho[posicao_origem-1])
 
-        posicao_destino=int(input('Sobre qual carta você quer empilhar o {}{} ? ' .format(numero_pos_origem, naipe_pos_origem)))   
+        movimentos_possiveis=lista_movimentos_possiveis(baralho, posicao_origem)
+        print (('Sobre qual carta você quer empilhar o {}{} ? ' .format(numero_pos_origem, naipe_pos_origem)))
+        if movimentos_possiveis==[]:
+            print ('Situação atual')
+            print ('--------------')
+            print ()
+        elif movimentos_possiveis==[1]:
+            print ('1. {}' .format(baralho[posicao_origem-1]))
+        elif movimentos_possiveis==[3]:
+            print ('1. {}' .format(baralho[posicao_origem-3]))
+        elif movimentos_possiveis==[1,3]:
+            print ('1. {}' .format(baralho[posicao_origem-1]))
+            print ('2. {}' .format(baralho[posicao_origem-3])) 
+
+        for a in movimentos_possiveis:
+            if a==[1] or a==[3]:
+                a='(1)'
+            else:
+                a='(1-2)'
+        posicao_destino=int(input('Digite o número de sua escolha {}' .format(a)))
+        
+        
         if (posicao_destino<=0 or posicao_destino>52):
             return 'Insira um valor válido'
         else:
