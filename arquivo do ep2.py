@@ -100,29 +100,33 @@ def paciencia_acordeao():
     input('Aperte [ENTER] para que começar a jogar ')
     print('')
     print('')
-    deseja_jogar='s'    
+    deseja_jogar='s'    #Condição para caso o jogador queira jogar
 
     while deseja_jogar=='s':
         baralho=cria_baralho()
-        random.shuffle(baralho)    
+        random.shuffle(baralho)     #Embaralhando as cartas do baralho
         while True:
             print('Situação atual do baralho:')
             print('~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-            print(print_baralho(baralho))   
-            pode_jogar=possui_movimentos_possiveis(baralho)     
+            print(print_baralho(baralho))   #Printando o baralho enquanto 'True' 
+            pode_jogar=possui_movimentos_possiveis(baralho)     #Estabelecendo a condição 
             if pode_jogar:
                 while True:
                     numero_valido=False
                     while not numero_valido:
+                        #Estabelecendo a carta que vai ficar em cima de outra (origem) com input
                         posicao_origem=int(input('Digite a posição da carta que deseja mover ({}-{}): ' .format('1', len(baralho))))
                         posicao=posicao_origem
+                        #Tendo certeza que a carta origem será válida
                         if (posicao_origem<=0 or posicao_origem>(len(baralho))):
                             return 'Insira um valor válido'
                         else:
                             numero_valido=True
+                    #Igualando a referência com o index da lista (obrigatório para a função rodar)
                     referencia=posicao-1
                     movimentos_possiveis=lista_movimentos_possiveis(baralho, referencia)
                     if 1 in movimentos_possiveis or 3 in movimentos_possiveis:
+                        #Estabelecendo uma posição destino que será empilhada e vendo se ela poderá ser empilhada seguindo as regras do jogo
                         if movimentos_possiveis==[1,3]:
                             print('Você possui 2 movimentos possíveis')
                             print('1. {} ' .format(baralho[referencia-1]))
@@ -145,11 +149,19 @@ def paciencia_acordeao():
                             baralho=empilha(baralho, referencia, referencia-3)
                         break
                     else:
+                        #Condição para que a carta da posição origem possa ser movida 
                         print ('A carta {} não pode ser movida. Selecione outra carta.' .format(baralho[referencia]))
+                        print('')
                         pass
                 pass
             else:
-                print('Não há mais movimentos possíveis... Você perdeu.') 
+                #Caso 'pode jogar' não seja True, retorna que acabou o jogo
+                print('Não há mais movimentos possíveis...') 
+                if len(baralho)!=1:     #Caso baralho tenha so 1 carta, o jogador ganha
+                    print('Você perdeu!')
+                else:
+                    print('Parabéns! Você ganhou!!')
+                #Pergunta se quer jogar novamente e caso sim, continua o loop de novo
                 deseja_jogar=input('Deseja jogar novamente? (s/n) ')
                 if deseja_jogar!='s':
                     print('Muito obrigado por jogar!')
