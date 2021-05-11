@@ -8,7 +8,6 @@ def cria_baralho():
         for e in naipes:
             cartas.append(i+e)    
     return cartas
-
 def extrai_naipe (baralho):
     letras_e_numeros=['A','2','3','4','5','6','7','8','9','10','J','Q','K']
     naipes=['♣', '♦', '♥', '♠']
@@ -17,7 +16,6 @@ def extrai_naipe (baralho):
         for e in naipes:
             if e in baralho:
                 return e 
-
 def extrai_valor (baralho):
     letras_e_numeros=['A','2','3','4','5','6','7','8','9','10','J','Q','K']
     naipes=['♣', '♦', '♥', '♠']
@@ -25,8 +23,7 @@ def extrai_valor (baralho):
     for i in letras_e_numeros:
         for e in naipes:
             if i in baralho:
-                return i 
-            
+                return i            
 def lista_movimentos_possiveis (baralho, posicao):
     lista_naipe=[]
     lista_numero=[]
@@ -55,14 +52,12 @@ def lista_movimentos_possiveis (baralho, posicao):
             return [3]
         else:
             return []  
-
 def empilha (baralho, posicao_origem, posicao_destino):
     for i in range (len(baralho)):
         baralho[posicao_destino]=baralho[posicao_origem]
         baralho.pop(posicao_origem)
         break
     return baralho
-
 def possui_movimentos_possiveis (baralho):
     lista_naipe=[]
     lista_numero=[]
@@ -85,63 +80,81 @@ def possui_movimentos_possiveis (baralho):
         return False
     else:
         return True
+def print_baralho(baralho):
+    i=0
+    j=1
+    while i<len(baralho):
+        print('{}. {}' .format(j,baralho[i]))
+        i+=1
+        j+=1
+    return ''
+
+
+
 
 
 def paciencia_acordeao():
     print('-Paciência Acordeão-')
     print('====================')
-    baralho=cria_baralho()
-    random.shuffle(baralho)
-    pode_jogar=possui_movimentos_possiveis(baralho)
+    #Iniciando jogo
+    input('Aperte [ENTER] para que começar a jogar ')
+    print('')
+    print('')
+    deseja_jogar='s'    
 
-    if pode_jogar==True:
-        print('Situação atual do baralho:')
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-
-        i=0
-        j=1
-        while i<len(baralho):
-            print('{}. {}' .format(j,baralho[i]))
-            i+=1
-            j+=1
-
-
-        posicao_origem=int(input('Digite a posicao da carta que deseja mover ({}-{}): ' .format('1', len(baralho))))
-        if (posicao_origem<=0 or posicao_origem>52):
-            return 'Insira um valor válido'
-        else:
-            naipe_pos_origem=extrai_naipe(baralho[posicao_origem-1])
-            numero_pos_origem=extrai_valor(baralho[posicao_origem-1])
-
-        movimentos_possiveis=lista_movimentos_possiveis(baralho, posicao_origem)
-        print (('Sobre qual carta você quer empilhar o {}{} ? ' .format(numero_pos_origem, naipe_pos_origem)))
-        if movimentos_possiveis==[]:
-            print ('Situação atual')
-            print ('--------------')
-            print ()
-        elif movimentos_possiveis==[1]:
-            print ('1. {}' .format(baralho[posicao_origem-1]))
-        elif movimentos_possiveis==[3]:
-            print ('1. {}' .format(baralho[posicao_origem-3]))
-        elif movimentos_possiveis==[1,3]:
-            print ('1. {}' .format(baralho[posicao_origem-1]))
-            print ('2. {}' .format(baralho[posicao_origem-3])) 
-
-        for a in movimentos_possiveis:
-            if a==[1] or a==[3]:
-                a='(1)'
+    while deseja_jogar=='s':
+        baralho=cria_baralho()
+        random.shuffle(baralho)    
+        while True:
+            print('Situação atual do baralho:')
+            print('~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+            print(print_baralho(baralho))   
+            pode_jogar=possui_movimentos_possiveis(baralho)     
+            if pode_jogar:
+                while True:
+                    numero_valido=False
+                    while not numero_valido:
+                        posicao_origem=int(input('Digite a posição da carta que deseja mover ({}-{}): ' .format('1', len(baralho))))
+                        posicao=posicao_origem
+                        if (posicao_origem<=0 or posicao_origem>(len(baralho))):
+                            return 'Insira um valor válido'
+                        else:
+                            numero_valido=True
+                    referencia=posicao-1
+                    movimentos_possiveis=lista_movimentos_possiveis(baralho, referencia)
+                    if 1 in movimentos_possiveis or 3 in movimentos_possiveis:
+                        if movimentos_possiveis==[1,3]:
+                            print('Você possui 2 movimentos possíveis')
+                            print('1. {} ' .format(baralho[referencia-1]))
+                            print('2. {} ' .format(baralho[referencia-3]))
+                            a=True
+                            while a:
+                                posicao_destino=input(('Sobre qual carta você quer empilhar o {} ? ' .format(baralho[referencia])))
+                                if posicao_destino!='1' and posicao_destino!='2':
+                                    print('Escolha um número válido (1/2) ')
+                                    pass
+                                elif posicao_destino=='1':
+                                    baralho=empilha(baralho, referencia, referencia-1)
+                                    a=False
+                                elif posicao_destino=='2':
+                                    baralho=empilha(baralho, referencia, referencia-3)
+                                    a=False
+                        elif movimentos_possiveis==[1]:
+                            baralho=empilha(baralho, referencia, referencia-1)
+                        elif movimentos_possiveis==[3]:
+                            baralho=empilha(baralho, referencia, referencia-3)
+                        break
+                    else:
+                        print ('A carta {} não pode ser movida. Selecione outra carta.' .format(baralho[referencia]))
+                        pass
+                pass
             else:
-                a='(1-2)'
-        posicao_destino=int(input('Digite o número de sua escolha {}' .format(a)))
-        
-        
-        if (posicao_destino<=0 or posicao_destino>52):
-            return 'Insira um valor válido'
-        else:
-            naipe_pos_destino=extrai_naipe(baralho[posicao_destino-1])
-            numero_pos_destino=extrai_valor(baralho[posicao_destino-1])
-            print (numero_pos_destino, naipe_pos_destino)
+                print('Não há mais movimentos possíveis... Você perdeu.') 
+                deseja_jogar=input('Deseja jogar novamente? (s/n) ')
+                if deseja_jogar!='s':
+                    print('Muito obrigado por jogar!')
+    return ''
 
-        pode_jogar=False
+            
 
 print (paciencia_acordeao())
