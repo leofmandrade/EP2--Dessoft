@@ -80,15 +80,24 @@ def possui_movimentos_possiveis (baralho):
         return False
     else:
         return True
+
 def print_baralho(baralho):
+    naipes=['♣', '♦', '♥', '♠']
     i=0
     j=1
     while i<len(baralho):
-        print('{}. {}' .format(j,baralho[i]))
+        if naipes[0] in baralho[i]:
+            print('\033[1;37;40m {}. \033[0;31;40m {} ' .format(j, baralho[i]))
+        elif naipes[1] in baralho[i]:
+            print('\033[1;37;40m {}. \033[0;32;40m {} ' .format(j, baralho[i]))
+        elif naipes[2] in baralho[i]:
+            print('\033[1;37;40m {}. \033[0;33;40m {} ' .format(j, baralho[i]))
+        elif naipes[3] in baralho[i]:
+            print('\033[1;37;40m {}. \033[0;34;40m {} ' .format(j, baralho[i]))
         i+=1
         j+=1
-    return ''
 
+    return ''
 
 
 
@@ -115,11 +124,12 @@ def paciencia_acordeao():
                     numero_valido=False
                     while not numero_valido:
                         #Estabelecendo a carta que vai ficar em cima de outra (origem) com input
-                        posicao_origem=int(input('Digite a posição da carta que deseja mover ({}-{}): ' .format('1', len(baralho))))
+                        posicao_origem=int(input('Digite a posição da carta que deseja mover entre {} e {} : ' .format('1', len(baralho))))
                         posicao=posicao_origem
                         #Tendo certeza que a carta origem será válida
                         if (posicao_origem<=0 or posicao_origem>(len(baralho))):
-                            return 'Insira um valor válido'
+                            print('Por favor, insira um valor válido')
+                            print('')
                         else:
                             numero_valido=True
                     #Igualando a referência com o index da lista (obrigatório para a função rodar)
@@ -143,10 +153,11 @@ def paciencia_acordeao():
                                 elif posicao_destino=='2':
                                     baralho=empilha(baralho, referencia, referencia-3)
                                     a=False
-                        elif movimentos_possiveis==[1]:
-                            baralho=empilha(baralho, referencia, referencia-1)
-                        elif movimentos_possiveis==[3]:
-                            baralho=empilha(baralho, referencia, referencia-3)
+                        elif len(movimentos_possiveis)==1:
+                            if movimentos_possiveis[0]==1:
+                                baralho=empilha(baralho, referencia, referencia-1)
+                            elif movimentos_possiveis[0]==3:
+                                baralho=empilha(baralho, referencia, referencia-3)
                         break
                     else:
                         #Condição para que a carta da posição origem possa ser movida 
@@ -162,9 +173,13 @@ def paciencia_acordeao():
                 else:
                     print('Parabéns! Você ganhou!!')
                 #Pergunta se quer jogar novamente e caso sim, continua o loop de novo
-                deseja_jogar=input('Deseja jogar novamente? (s/n) ')
-                if deseja_jogar!='s':
+                novamente=input('Deseja jogar novamente? (s/n) ')
+                if novamente=='s':
+                    break
+                elif novamente=='n':
                     print('Muito obrigado por jogar!')
+                    deseja_jogar=False
+                    break
     return ''
 
             
